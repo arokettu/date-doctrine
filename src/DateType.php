@@ -63,14 +63,4 @@ final class DateType extends Type
 
         throw InvalidType::new($value, static::NAME, ['null', 'string', Date::class]);
     }
-
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
-    }
 }

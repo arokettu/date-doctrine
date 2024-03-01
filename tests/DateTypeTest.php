@@ -19,21 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 class DateTypeTest extends TestCase
 {
-    public function testName(): void
-    {
-        $type = new DateType();
-
-        self::assertEquals($type::NAME, $type->getName());
-    }
-
-    public function testRequireComment(): void
-    {
-        $type = new DateType();
-        $platform = new SQLitePlatform();
-
-        self::assertTrue($type->requiresSQLCommentHint($platform));
-    }
-
     public function testBindingType(): void
     {
         $type = new DateType();
