@@ -41,6 +41,11 @@ class DateObject
 composer require arokettu/date-doctrine
 ```
 
+* Version 1.x is for `doctrine/dbal` v3
+* Version 2.x is for `doctrine/dbal` v4
+
+The versions are fully interchangeable except for hard dependency on DBAL.
+
 ## Documentation
 
 Read full documentation for the base library here: <https://sandfox.dev/php/date.html>
