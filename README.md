@@ -25,7 +25,7 @@
 <?php
 
 use Arokettu\Date\Date;
-use Doctrine\ORM\Mapping\{Column,CustomIdGenerator,Entity,GeneratedValue,Id,Table};
+use Doctrine\ORM\Mapping\{Column,Table};
 
 #[Entity, Table(name: 'date_object')]
 class DateObject
