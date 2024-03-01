@@ -1,0 +1,21 @@
+{
+    "name": "arokettu/date-doctrine",
+    "description": "Doctrine support for arokettu/date",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Smirnov",
+            "email": "sandfox+git@sandfox.me"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Arokettu\\Date\\Doctrine\\": "src/"
+        }
+    },
+    "require": {}
+}
