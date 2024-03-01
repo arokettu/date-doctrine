@@ -6,7 +6,9 @@ namespace Arokettu\Date\Doctrine;
 
 use Arokettu\Date\Date;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\SerializationFailed;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 
 final class DateType extends Type
@@ -27,7 +29,8 @@ final class DateType extends Type
         try {
             return Date::parse($value);
         } catch (\TypeError | \DomainException) {
-            throw ConversionException::conversionFailedUnserialization(
+            throw ValueNotConvertible::new(
+                $value,
                 static::NAME,
                 'Not a valid date representation'
             );
@@ -49,16 +52,16 @@ final class DateType extends Type
                 $value = Date::parse((string)$value);
                 return $value->toString();
             } catch (\TypeError | \UnexpectedValueException | \DomainException $e) {
-                throw ConversionException::conversionFailedSerialization(
+                throw SerializationFailed::new(
                     $value,
-                    self::NAME,
+                    static::NAME,
                     'Not a valid date representation',
                     $e
                 );
             }
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, self::NAME, ['null', 'string', Date::class]);
+        throw InvalidType::new($value, static::NAME, ['null', 'string', Date::class]);
     }
 
     public function getName(): string
