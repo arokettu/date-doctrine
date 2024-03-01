@@ -1,14 +1,22 @@
 {
     "name": "arokettu/date-doctrine",
     "description": "Doctrine support for arokettu/date",
+    "keywords": ["date", "doctrine"],
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Anton Smirnov",
-            "email": "sandfox+git@sandfox.me"
-        }
-    ],
+    "homepage": "https://sandfox.dev/php/date/doctrine.html",
+    "authors": [{
+        "name": "Anton Smirnov",
+        "email": "sandfox+composer@sandfox.me",
+        "role": "developer",
+        "homepage": "https://sandfox.me/"
+    }],
+    "support": {
+        "issues": "https://gitlab.com/sandfox/date-doctrine/-/issues",
+        "source": "https://gitlab.com/sandfox/date-doctrine",
+        "docs": "https://php-date.readthedocs.io/en/latest/doctrine.html",
+        "chat": "https://gitter.im/arokettu/community"
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
