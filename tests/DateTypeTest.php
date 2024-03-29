@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Date\Doctrine\Tests;
 
 use Arokettu\Date\Date;
+use Arokettu\Date\Doctrine\DateHelper;
 use Arokettu\Date\Doctrine\DateType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
@@ -93,7 +94,7 @@ class DateTypeTest extends TestCase
         $platform = new SQLitePlatform();
 
         $date = '2014-12-15';
-        $dateObj = Date::parse($date);
+        $dateObj = DateHelper::parse($date);
         $stringable = new class () {
             public function __toString(): string
             {

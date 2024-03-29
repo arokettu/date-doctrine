@@ -27,7 +27,7 @@ final class DateType extends Type
         }
 
         try {
-            return Date::parse($value);
+            return DateHelper::parse($value);
         } catch (\TypeError | \DomainException) {
             throw ValueNotConvertible::new(
                 $value,
@@ -49,7 +49,7 @@ final class DateType extends Type
 
         if (\is_string($value) || $value instanceof \Stringable) {
             try {
-                $value = Date::parse((string)$value);
+                $value = DateHelper::parse((string)$value);
                 return $value->toString();
             } catch (\TypeError | \UnexpectedValueException | \DomainException $e) {
                 throw SerializationFailed::new(
