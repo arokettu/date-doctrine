@@ -35,7 +35,7 @@
     },
     "require": {
         "php": "^8.2",
-        "arokettu/date": "^1.0",
+        "arokettu/date": "^1.0 | ^2.0",
         "doctrine/dbal": "^3.4"
     },
     "require-dev": {
