@@ -20,7 +20,7 @@ final class DateType extends Type
         return $platform->getDateTypeDeclarationSQL($column);
     }
 
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Date
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): Date|null
     {
         if ($value === null || $value instanceof Date) {
             return $value;
@@ -37,7 +37,7 @@ final class DateType extends Type
         }
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
