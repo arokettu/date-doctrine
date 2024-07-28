@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.1.1
+
+*Jul 28, 2024*
+
+* Handle exceptions being thrown since Date 2.2.2
+
 ### 2.1.0
 
 *Mar 29, 2024*
