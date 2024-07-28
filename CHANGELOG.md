@@ -19,6 +19,12 @@ Branched from 1.0.0
 
 ## 1.x
 
+### 1.1.1
+
+*Jul 28, 2024*
+
+* Handle exceptions being thrown since Date 2.2.2
+
 ### 1.1.0
 
 *Mar 29, 2024*

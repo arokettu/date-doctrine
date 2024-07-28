@@ -10,6 +10,10 @@ use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Exception\SerializationFailed;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
+use DomainException;
+use RangeException;
+use TypeError;
+use UnexpectedValueException;
 
 final class DateType extends Type
 {
@@ -28,7 +32,7 @@ final class DateType extends Type
 
         try {
             return DateHelper::parse($value);
-        } catch (\TypeError | \DomainException) {
+        } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
             throw ValueNotConvertible::new(
                 $value,
                 static::NAME,
@@ -51,7 +55,7 @@ final class DateType extends Type
             try {
                 $value = DateHelper::parse((string)$value);
                 return $value->toString();
-            } catch (\TypeError | \UnexpectedValueException | \DomainException $e) {
+            } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
                 throw SerializationFailed::new(
                     $value,
                     static::NAME,
