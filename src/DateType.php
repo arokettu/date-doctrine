@@ -35,7 +35,7 @@ final class DateType extends Type
         } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
             throw ValueNotConvertible::new(
                 $value,
-                static::NAME,
+                self::NAME,
                 'Not a valid date representation'
             );
         }
@@ -58,13 +58,13 @@ final class DateType extends Type
             } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
                 throw SerializationFailed::new(
                     $value,
-                    static::NAME,
+                    self::NAME,
                     'Not a valid date representation',
                     $e
                 );
             }
         }
 
-        throw InvalidType::new($value, static::NAME, ['null', 'string', Date::class]);
+        throw InvalidType::new($value, self::NAME, ['null', 'string', Date::class]);
     }
 }
