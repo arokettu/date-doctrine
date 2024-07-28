@@ -19,6 +19,17 @@
 
 [``arokettu/date``](https://sandfox.dev/php/date.html) row classes and ID generators for Doctrine.
 
+## Installation
+
+```bash
+composer require arokettu/date-doctrine
+```
+
+* Version 1.x is for `doctrine/dbal` v3
+* Version 2.x is for `doctrine/dbal` v4
+
+The versions are fully interchangeable except for hard dependency on DBAL.
+
 ## Usage
 
 ```php
@@ -34,17 +45,6 @@ class DateObject
     public Date $date;
 }
 ```
-
-## Installation
-
-```bash
-composer require arokettu/date-doctrine
-```
-
-* Version 1.x is for `doctrine/dbal` v3
-* Version 2.x is for `doctrine/dbal` v4
-
-The versions are fully interchangeable except for hard dependency on DBAL.
 
 ## Documentation
 
