@@ -8,6 +8,10 @@ use Arokettu\Date\Date;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use DomainException;
+use RangeException;
+use TypeError;
+use UnexpectedValueException;
 
 final class DateType extends Type
 {
@@ -26,7 +30,7 @@ final class DateType extends Type
 
         try {
             return DateHelper::parse($value);
-        } catch (\TypeError | \DomainException) {
+        } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
             throw ConversionException::conversionFailedUnserialization(
                 static::NAME,
                 'Not a valid date representation'
@@ -48,7 +52,7 @@ final class DateType extends Type
             try {
                 $value = DateHelper::parse((string)$value);
                 return $value->toString();
-            } catch (\TypeError | \UnexpectedValueException | \DomainException $e) {
+            } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
                 throw ConversionException::conversionFailedSerialization(
                     $value,
                     self::NAME,
