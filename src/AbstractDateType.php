@@ -21,63 +21,55 @@ use UnexpectedValueException;
 
 abstract class AbstractDateType extends Type
 {
-    public const NAME = 'arokettu_date';
+    public const NAME = ''; // override
+
+    abstract protected function dateToDB(Date $date): mixed;
 
     #[Override]
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-    {
-        return $platform->getDateTypeDeclarationSQL($column);
-    }
-
-    #[Override]
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): Date|null
-    {
-        if ($value === null || $value instanceof Date) {
-            return $value;
-        }
-
-        try {
-            return DateHelper::parse($value);
-        } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
-            throw ConversionException::conversionFailedUnserialization(
-                static::NAME,
-                'Not a valid date representation',
-            );
-        }
-    }
-
-    #[Override]
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string|null
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return null;
         }
 
-        if ($value instanceof Date) {
-            return $value->toString();
-        }
+        switch (true) {
+            case $value instanceof Date:
+                // fall through
+                break;
 
-        if (\is_string($value) || $value instanceof \Stringable) {
-            try {
-                $value = DateHelper::parse((string)$value);
-                return $value->toString();
-            } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
-                throw ConversionException::conversionFailedSerialization(
+            case \is_int($value):
+                $value = new Date($value);
+                break;
+
+            case \is_string($value):
+            case $value instanceof \Stringable:
+                try {
+                    $value = DateHelper::parse((string)$value);
+                } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
+                    throw ConversionException::conversionFailedSerialization(
+                        $value,
+                        static::NAME,
+                        'Not a valid date representation',
+                        $e,
+                    );
+                }
+                break;
+
+            default:
+                throw ConversionException::conversionFailedInvalidType(
                     $value,
-                    self::NAME,
-                    'Not a valid date representation',
-                    $e,
+                    static::NAME,
+                    ['null', 'int', 'string', Date::class],
                 );
-            }
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, self::NAME, ['null', 'string', Date::class]);
+        return $this->dateToDB($value);
     }
 
     #[Override]
     public function getName(): string
     {
-        return self::NAME;
+        return static::NAME;
     }
 
     #[Override]

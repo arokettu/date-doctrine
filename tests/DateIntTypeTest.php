@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace Arokettu\Date\Doctrine\Tests;
 
 use Arokettu\Date\Date;
-use Arokettu\Date\Doctrine\DateHelper;
-use Arokettu\Date\Doctrine\DateType;
+use Arokettu\Date\Doctrine\DateIntType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
@@ -25,18 +24,18 @@ use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use PHPUnit\Framework\TestCase;
 
-final class DateTypeTest extends TestCase
+final class DateIntTypeTest extends TestCase
 {
     public function testName(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
 
         self::assertEquals($type::NAME, $type->getName());
     }
 
     public function testRequireComment(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
         $platform = new SqlitePlatform();
 
         self::assertTrue($type->requiresSQLCommentHint($platform));
@@ -44,25 +43,25 @@ final class DateTypeTest extends TestCase
 
     public function testBindingType(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
 
-        self::assertEquals(ParameterType::STRING, $type->getBindingType());
+        self::assertEquals(ParameterType::INTEGER, $type->getBindingType());
     }
 
     public function testCreation(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
 
         $sql = [
-            [new SqlitePlatform(), 'DATE'],
-            [new MySQLPlatform(), 'DATE'],
-            [new MySQL80Platform(), 'DATE'],
-            [new PostgreSQLPlatform(), 'DATE'],
-            [new PostgreSQL94Platform(), 'DATE'],
-            [new PostgreSQL100Platform(), 'DATE'],
-            [new MariaDBPlatform(), 'DATE'],
-            [new SQLServerPlatform(), 'DATE'],
-            [new OraclePlatform(), 'DATE'],
+            [new SqlitePlatform(), 'INTEGER'],
+            [new MySQLPlatform(), 'INT'],
+            [new MySQL80Platform(), 'INT'],
+            [new PostgreSQLPlatform(), 'INT'],
+            [new PostgreSQL94Platform(), 'INT'],
+            [new PostgreSQL100Platform(), 'INT'],
+            [new MariaDBPlatform(), 'INT'],
+            [new SQLServerPlatform(), 'INT'],
+            [new OraclePlatform(), 'NUMBER(10)'],
         ];
 
         $column = ['name' => 'test_test'];
@@ -74,88 +73,55 @@ final class DateTypeTest extends TestCase
 
     public function testDbToPHP(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
         $platform = new SqlitePlatform();
 
-        $date = '2014-12-15';
+        $date = 2457007; // '2014-12-15';
 
         self::assertNull($type->convertToPHPValue(null, $platform));
 
         $dateObj = $type->convertToPHPValue($date, $platform);
         self::assertInstanceOf(Date::class, $dateObj);
-        self::assertEquals($date, $dateObj->toString());
+        self::assertEquals($date, $dateObj->julianDay);
     }
 
     public function testDbToPHPWrongType(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
         $platform = new SqlitePlatform();
 
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert database value to 'arokettu_date' as an error was triggered by the unserialization: " .
-            "'Not a valid date representation'",
+            "Could not convert database value to 'arokettu_date_int' as an error was triggered " .
+            "by the unserialization: 'Not a valid date representation'",
         );
-        $type->convertToPHPValue(123, $platform);
-    }
-
-    public function testDbToPHPWrongFormat(): void
-    {
-        $type = new DateType();
-        $platform = new SqlitePlatform();
-
-        $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage(
-            "Could not convert database value to 'arokettu_date' as an error was triggered by the unserialization: " .
-            "'Not a valid date representation'",
-        );
-        $type->convertToPHPValue('2015-15-15', $platform);
+        $type->convertToPHPValue('abcd', $platform);
     }
 
     public function testPHPToDb(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
         $platform = new SqlitePlatform();
 
-        $date = '2014-12-15';
-        $dateObj = DateHelper::parse($date);
-        $stringable = new class () {
-            public function __toString(): string
-            {
-                return '2014-12-15';
-            }
-        };
+        $date = 2457007; // '2014-12-15';
+        $dateObj = new Date($date);
 
         self::assertEquals($date, $type->convertToDatabaseValue($date, $platform));
         self::assertEquals($date, $type->convertToDatabaseValue($dateObj, $platform));
-        self::assertEquals($date, $type->convertToDatabaseValue($stringable, $platform));
 
         self::assertNull($type->convertToDatabaseValue(null, $platform));
     }
 
     public function testPHPToDbWrongType(): void
     {
-        $type = new DateType();
+        $type = new DateIntType();
         $platform = new SqlitePlatform();
 
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            'Could not convert PHP value 123.45 to type arokettu_date. ' .
+            'Could not convert PHP value 123.45 to type arokettu_date_int. ' .
             'Expected one of the following types: null, int, string, Arokettu\Date\Date',
         );
         $type->convertToDatabaseValue(123.45, $platform);
-    }
-
-    public function testPHPToDbWrongFormat(): void
-    {
-        $type = new DateType();
-        $platform = new SqlitePlatform();
-
-        $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage(
-            "Could not convert PHP type 'string' to 'arokettu_date', " .
-            "as an 'Not a valid date representation' error was triggered by the serialization",
-        );
-        $type->convertToDatabaseValue('2015-15-15', $platform);
     }
 }
