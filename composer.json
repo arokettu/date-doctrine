@@ -35,13 +35,13 @@
     },
     "require": {
         "php": "^8.2",
-        "arokettu/date": "^1.0 | ^2.0",
+        "arokettu/date": "^1.0 || ^2.0",
         "doctrine/dbal": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5.11",
-        "sandfox.dev/code-standard": "^1.2023.12.09",
+        "sandfox.dev/code-standard": "^1.2025.09.17",
         "squizlabs/php_codesniffer": "*",
-        "vimeo/psalm": "^5.22.2"
+        "vimeo/psalm": "^5.22.2 || ^6"
     }
 }

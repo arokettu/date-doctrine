@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @copyright 2024 Anton Smirnov
+ * @license MIT https://spdx.org/licenses/MIT.html
+ */
+
 declare(strict_types=1);
 
 namespace Arokettu\Date\Doctrine\Tests;
@@ -18,7 +23,7 @@ use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use PHPUnit\Framework\TestCase;
 
-class DateTypeTest extends TestCase
+final class DateTypeTest extends TestCase
 {
     public function testBindingType(): void
     {
@@ -119,7 +124,7 @@ class DateTypeTest extends TestCase
             'Could not convert PHP value 123 to type arokettu_date. ' .
             'Expected one of the following types: null, string, Arokettu\Date\Date'
         );
-        $type->convertToDatabaseValue(123, $platform);
+        $type->convertToDatabaseValue(123.45, $platform);
     }
 
     public function testPHPToDbWrongFormat(): void

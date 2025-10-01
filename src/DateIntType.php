@@ -10,24 +10,23 @@ declare(strict_types=1);
 namespace Arokettu\Date\Doctrine;
 
 use Arokettu\Date\Date;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidType;
-use Doctrine\DBAL\Types\Exception\SerializationFailed;
-use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
+use Doctrine\DBAL\Types\ConversionException;
 use DomainException;
 use Override;
 use RangeException;
 use TypeError;
 use UnexpectedValueException;
 
-final class DateType extends AbstractDateType
+final class DateIntType extends AbstractDateType
 {
-    public const NAME = 'arokettu_date';
+    public const NAME = 'arokettu_date_int';
 
     #[Override]
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getDateTypeDeclarationSQL($column);
+        return $platform->getIntegerTypeDeclarationSQL($column);
     }
 
     #[Override]
@@ -38,18 +37,23 @@ final class DateType extends AbstractDateType
         }
 
         try {
-            return DateHelper::parse($value);
+            return new Date($value);
         } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
-            throw ValueNotConvertible::new(
-                $value,
+            throw ConversionException::conversionFailedUnserialization(
                 self::NAME,
                 'Not a valid date representation',
             );
         }
     }
 
-    protected function dateToDB(Date $date): string
+    #[Override]
+    public function getBindingType(): int
     {
-        return $date->toString();
+        return ParameterType::INTEGER;
+    }
+
+    protected function dateToDB(Date $date): int
+    {
+        return $date->julianDay;
     }
 }
