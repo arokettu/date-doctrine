@@ -19,7 +19,7 @@ use RangeException;
 use TypeError;
 use UnexpectedValueException;
 
-final class DateType extends Type
+abstract class AbstractDateType extends Type
 {
     public const NAME = 'arokettu_date';
 
