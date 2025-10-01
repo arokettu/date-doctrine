@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @copyright 2024 Anton Smirnov
+ * @license MIT https://spdx.org/licenses/MIT.html
+ */
+
 declare(strict_types=1);
 
 namespace Arokettu\Date\Doctrine\Tests;
@@ -20,7 +25,7 @@ use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use PHPUnit\Framework\TestCase;
 
-class DateTypeTest extends TestCase
+final class DateTypeTest extends TestCase
 {
     public function testName(): void
     {
@@ -89,7 +94,7 @@ class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert database value to 'arokettu_date' as an error was triggered by the unserialization: " .
-            "'Not a valid date representation'"
+            "'Not a valid date representation'",
         );
         $type->convertToPHPValue(123, $platform);
     }
@@ -102,7 +107,7 @@ class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert database value to 'arokettu_date' as an error was triggered by the unserialization: " .
-            "'Not a valid date representation'"
+            "'Not a valid date representation'",
         );
         $type->convertToPHPValue('2015-15-15', $platform);
     }
@@ -135,8 +140,8 @@ class DateTypeTest extends TestCase
 
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            "Could not convert PHP value 123 to type arokettu_date. " .
-            "Expected one of the following types: null, string, Arokettu\Date\Date"
+            'Could not convert PHP value 123 to type arokettu_date. ' .
+            'Expected one of the following types: null, string, Arokettu\Date\Date',
         );
         $type->convertToDatabaseValue(123, $platform);
     }
@@ -149,7 +154,7 @@ class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             "Could not convert PHP type 'string' to 'arokettu_date', " .
-            "as an 'Not a valid date representation' error was triggered by the serialization"
+            "as an 'Not a valid date representation' error was triggered by the serialization",
         );
         $type->convertToDatabaseValue('2015-15-15', $platform);
     }
