@@ -63,7 +63,7 @@ final class DateIntTypeTest extends TestCase
 
         $dateObj = $type->convertToPHPValue($date, $platform);
         self::assertInstanceOf(Date::class, $dateObj);
-        self::assertEquals($date, $dateObj->julianDay);
+        self::assertEquals($date, $dateObj->getJulianDay());
     }
 
     public function testDbToPHPWrongType(): void

@@ -32,6 +32,12 @@ Branched from 1.0.0
 
 ## 1.x
 
+### 1.2.1
+
+*Oct 1, 2025*
+
+* Fixed incompatibility of DateIntType with arokettu/date 1.x
+
 ### 1.2.0
 
 *Oct 1, 2025*
