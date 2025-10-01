@@ -75,7 +75,7 @@ final class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             'Could not convert database value to "arokettu_date" as an error was triggered by the unserialization: ' .
-            'Not a valid date representation'
+            'Not a valid date representation',
         );
         $type->convertToPHPValue(123, $platform);
     }
@@ -88,7 +88,7 @@ final class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             'Could not convert database value to "arokettu_date" as an error was triggered by the unserialization: ' .
-            'Not a valid date representation'
+            'Not a valid date representation',
         );
         $type->convertToPHPValue('2015-15-15', $platform);
     }
@@ -121,8 +121,8 @@ final class DateTypeTest extends TestCase
 
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
-            'Could not convert PHP value 123 to type arokettu_date. ' .
-            'Expected one of the following types: null, string, Arokettu\Date\Date'
+            'Could not convert PHP value 123.45 to type arokettu_date. ' .
+            'Expected one of the following types: null, int, string, Arokettu\Date\Date',
         );
         $type->convertToDatabaseValue(123.45, $platform);
     }
@@ -135,7 +135,7 @@ final class DateTypeTest extends TestCase
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage(
             'Could not convert PHP type "string" to "arokettu_date". ' .
-            'An error was triggered by the serialization: Not a valid date representation'
+            'An error was triggered by the serialization: Not a valid date representation',
         );
         $type->convertToDatabaseValue('2015-15-15', $platform);
     }

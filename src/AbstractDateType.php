@@ -11,7 +11,8 @@ namespace Arokettu\Date\Doctrine;
 
 use Arokettu\Date\Date;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\SerializationFailed;
 use Doctrine\DBAL\Types\Type;
 use DomainException;
 use Override;
@@ -46,7 +47,7 @@ abstract class AbstractDateType extends Type
                 try {
                     $value = DateHelper::parse((string)$value);
                 } catch (TypeError | DomainException | UnexpectedValueException | RangeException $e) {
-                    throw ConversionException::conversionFailedSerialization(
+                    throw SerializationFailed::new(
                         $value,
                         static::NAME,
                         'Not a valid date representation',
@@ -56,25 +57,9 @@ abstract class AbstractDateType extends Type
                 break;
 
             default:
-                throw ConversionException::conversionFailedInvalidType(
-                    $value,
-                    static::NAME,
-                    ['null', 'int', 'string', Date::class],
-                );
+                throw InvalidType::new($value, static::NAME, ['null', 'int', 'string', Date::class]);
         }
 
         return $this->dateToDB($value);
-    }
-
-    #[Override]
-    public function getName(): string
-    {
-        return static::NAME;
-    }
-
-    #[Override]
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
     }
 }

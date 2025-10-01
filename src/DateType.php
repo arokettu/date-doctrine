@@ -11,8 +11,6 @@ namespace Arokettu\Date\Doctrine;
 
 use Arokettu\Date\Date;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidType;
-use Doctrine\DBAL\Types\Exception\SerializationFailed;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use DomainException;
 use Override;
@@ -48,6 +46,7 @@ final class DateType extends AbstractDateType
         }
     }
 
+    #[Override]
     protected function dateToDB(Date $date): string
     {
         return $date->toString();

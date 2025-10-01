@@ -12,7 +12,7 @@ namespace Arokettu\Date\Doctrine;
 use Arokettu\Date\Date;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use DomainException;
 use Override;
 use RangeException;
@@ -39,7 +39,8 @@ final class DateIntType extends AbstractDateType
         try {
             return new Date($value);
         } catch (TypeError | DomainException | UnexpectedValueException | RangeException) {
-            throw ConversionException::conversionFailedUnserialization(
+            throw ValueNotConvertible::new(
+                $value,
                 self::NAME,
                 'Not a valid date representation',
             );
@@ -47,11 +48,12 @@ final class DateIntType extends AbstractDateType
     }
 
     #[Override]
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::INTEGER;
     }
 
+    #[Override]
     protected function dateToDB(Date $date): int
     {
         return $date->julianDay;
