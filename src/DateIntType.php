@@ -52,8 +52,9 @@ final class DateIntType extends AbstractDateType
         return ParameterType::INTEGER;
     }
 
+    #[Override]
     protected function dateToDB(Date $date): int
     {
-        return $date->julianDay;
+        return $date->getJulianDay();
     }
 }

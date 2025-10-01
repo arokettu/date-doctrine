@@ -45,6 +45,7 @@ final class DateType extends AbstractDateType
         }
     }
 
+    #[Override]
     protected function dateToDB(Date $date): string
     {
         return $date->toString();
