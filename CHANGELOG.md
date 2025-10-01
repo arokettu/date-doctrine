@@ -2,6 +2,13 @@
 
 ## 1.x
 
+### 1.2.0
+
+*Oct 1, 2025*
+
+* DateIntType
+* DateType now accepts int scalar values as a Julian day
+
 ### 1.1.1
 
 *Jul 28, 2024*
